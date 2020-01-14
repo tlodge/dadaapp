@@ -68,6 +68,7 @@ export default createBottomTabNavigator(
     Devices: {
       screen: DevicesScreen,
       navigationOptions: {
+        
         header: (
           <View style={styles.headerContainer}>
             <Image style={styles.headerImage} source={hederBackground} />
@@ -149,6 +150,7 @@ export default createBottomTabNavigator(
     tabBarPosition: 'bottom',
     animationEnabled: false,
     swipeEnabled: false,
+   
     tabBarOptions: {
       showLabel: true,
       style: {

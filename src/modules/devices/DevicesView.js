@@ -1,80 +1,96 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
   View,
-  Platform,
   Text,
   FlatList,
   TouchableOpacity,
-  Image,
-  Dimensions,
 } from 'react-native';
+import Image from 'react-native-remote-svg'
 import { colors, fonts } from '../../styles';
 
-export default class DevicesScreen extends React.Component {
+export default function DevicesScreen (props){
+    navigationOptions = {
+        title: 'Details',
+    };
+    
+    const {devices} = props;
 
-  _sketchDevice = device =>{
-    this.props.navigation.navigate({
-        routeName: 'Sketch',
-        params: { ...device },
+    useEffect(() => {
+        // Update the document title using the browser API
+       props.fetchDevices();
     });
-  }
-//<TouchableOpacity
-//key={item.id}
-//style={styles.itemThreeContainer}
-//onPress={() => this._openArticle(item)}
-//>
-  renderDeviceList = ({ item }) => (
-    <View style={styles.itemThreeContainer}>
-      <View style={styles.itemThreeSubContainer}>
-        <TouchableOpacity onPress={() => this._sketchDevice(item)} key={item.id}>
-            <Image  source={{ uri: item.image }} style={styles.itemThreeImage} />
-        </TouchableOpacity>
-        <View style={styles.itemThreeContent}>
-          <Text style={styles.itemThreeBrand}>{item.brand}</Text>
-          <View>
-            <Text style={styles.itemThreeTitle}>{item.title}</Text>
-            <Text style={styles.itemThreeSubtitle} numberOfLines={1}>
-              {item.subtitle}
-            </Text>
-          </View>
-          <View style={styles.itemThreeMetaContainer}>
-            {item.badge && (
-              <View
-                style={[
-                  styles.badge,
-                  item.badge === 'NEW' && { backgroundColor: colors.green },
-                ]}
-              >
-                <Text
-                  style={{ fontSize: 10, color: colors.white }}
-                  styleName="bright"
-                >
-                  {item.badge}
-                </Text>
-              </View>
-            )}
-            <Text style={styles.itemThreePrice}>{item.price}</Text>
-          </View>
+
+    _onSelectImage = (device, image)=>{
+        props.updateDeviceImage(device.id, image);
+    };
+    
+    _sketchDevice = device =>{
+        console.log("in sketch device", device);
+        props.navigation.navigate({
+            routeName: 'Sketch',
+            params: { ...device, onSelectImage:(image)=>_onSelectImage(device,image) },
+        });
+    }
+
+    renderDeviceList = ({ item }) => (
+        <View style={styles.itemThreeContainer}>
+            <View style={styles.itemThreeSubContainer}>
+                <TouchableOpacity onPress={() => _sketchDevice(item)} key={item.id}>
+                    <Image  source={{ uri: item.image }} style={styles.itemThreeImage} />
+                </TouchableOpacity>
+                <View style={styles.itemThreeContent}>
+                <Text style={styles.itemThreemacaddr}>{item.macaddr}</Text>
+                <View>
+                    <Text style={styles.itemThreeTitle}>{item.title}</Text>
+                    <Text style={styles.itemThreeSubtitle} numberOfLines={1}>
+                    {item.subtitle}
+                    </Text>
+                </View>
+                <View style={styles.itemThreeMetaContainer}>
+                    {item.badge && (
+                    <View
+                        style={[
+                        styles.badge,
+                        item.badge === 'NEW' && { backgroundColor: colors.green },
+                        ]}
+                    >
+                        <Text
+                        style={{ fontSize: 10, color: colors.white }}
+                        styleName="bright"
+                        >
+                        {item.badge}
+                        </Text>
+                    </View>
+                    )}
+                    <Text style={styles.itemThreePrice}>{item.price}</Text>
+                </View>
+                </View>
+            </View>
+            <View style={styles.itemThreeHr} />
         </View>
-      </View>
-      <View style={styles.itemThreeHr} />
-      </View>
   );
 
-  render() {
-    const groupedData = this.props.data;
+ 
+ 
 
-    return (
+   
+  
+
+       
+  
+    
+        return (
       <View style={styles.container}>
         <FlatList
           style={{ backgroundColor: colors.white, paddingHorizontal: 15 }}
-          data={groupedData}
-          renderItem={this.renderDeviceList}
+          data={devices}
+          renderItem={renderDeviceList}
         />
       </View>
     );
-  }
+        
+  
 }
 
 const styles = StyleSheet.create({
@@ -102,7 +118,7 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     justifyContent: 'space-between',
   },
-  itemThreeBrand: {
+  itemThreemacaddr: {
     fontFamily: fonts.primaryRegular,
     fontSize: 14,
     color: '#617ae1',

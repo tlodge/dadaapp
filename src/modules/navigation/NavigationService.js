@@ -3,7 +3,7 @@ import { NavigationActions, StackActions } from 'react-navigation';
 let _navigator;
 
 function setTopLevelNavigator(navigatorRef) {
-    console.log("am in here!!");
+   
   _navigator = navigatorRef;
   
   if (_navigator){
@@ -12,7 +12,6 @@ function setTopLevelNavigator(navigatorRef) {
     _navigator.dispatch(
         NavigationActions.navigate({
           routeName:"Devices",
-          params:{},
         })
       );
 

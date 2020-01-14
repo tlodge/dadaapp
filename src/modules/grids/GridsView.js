@@ -14,65 +14,30 @@ import { colors, fonts } from '../../styles';
 import { RadioGroup, GridRow } from '../../components';
 
 export default class GridsScreen extends React.Component {
+  
   _getRenderItemFunction = () =>
     [this.renderRowOne, this.renderRowTwo, this.renderRowThree][
       this.props.tabIndex
     ];
 
+  _onSelectImage = (article, image)=>{
+    console.log("selectd", article, image);
+  };
+
   _openArticle = article => {
+    const params = { 
+      ...article, 
+      "testparam": "a test param",
+      onSelectImage:()=>{console.log("hello")}
+    };
+
+    console.log("navigating!!", params);
+
     this.props.navigation.navigate({
       routeName: 'Article',
-      params: { ...article },
+      params, 
     });
   };
-
-  renderRowOne = rowData => {
-    const cellViews = rowData.item.map(item => (
-      <TouchableOpacity key={item.id} onPress={() => this._openArticle(item)}>
-        <View style={styles.itemOneContainer}>
-          <View style={styles.itemOneImageContainer}>
-            <Image style={styles.itemOneImage} source={{ uri: item.image }} />
-          </View>
-          <View style={styles.itemOneContent}>
-            <Text style={styles.itemOneTitle} numberOfLines={1}>
-              {item.title}
-            </Text>
-            <Text
-              style={styles.itemOneSubTitle}
-              styleName="collapsible"
-              numberOfLines={3}
-            >
-              {item.subtitle}
-            </Text>
-            <Text style={styles.itemOnePrice} numberOfLines={1}>
-              {item.price}
-            </Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-    ));
-    return (
-      <View key={rowData.item[0].id} style={styles.itemOneRow}>
-        {cellViews}
-      </View>
-    );
-  };
-
-  renderRowTwo = ({ item }) => (
-    <TouchableOpacity
-      key={item.id}
-      style={styles.itemTwoContainer}
-      onPress={() => this._openArticle(item)}
-    >
-      <View style={styles.itemTwoContent}>
-        <Image style={styles.itemTwoImage} source={{ uri: item.image }} />
-        <View style={styles.itemTwoOverlay} />
-        <Text style={styles.itemTwoTitle}>{item.title}</Text>
-        <Text style={styles.itemTwoSubTitle}>{item.subtitle}</Text>
-        <Text style={styles.itemTwoPrice}>{item.price}</Text>
-      </View>
-    </TouchableOpacity>
-  );
 
   renderRowThree = ({ item }) => (
     <TouchableOpacity

@@ -18,8 +18,11 @@ const stackNavigator = createStackNavigator(
   {
     Main: {
       screen: MainTabNavigator,
-      navigationOptions: () => ({
-        title: 'Dada Network Tool',
+      navigationOptions: () => 
+      {
+        
+        return {
+        title: "DADA network tool",
         headerLeft: null,
         headerBackground: (
           <Image
@@ -31,8 +34,10 @@ const stackNavigator = createStackNavigator(
             resizeMode="cover"
           />
         ),
-      }),
+      }
     },
+  },
+    
     Sketch : {
       screen: Sketch,
       navigationOptions: {

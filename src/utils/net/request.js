@@ -21,12 +21,12 @@ export function put(url="", data={}){
 
 export function get(url, query, accept="*/*"){
   return new Promise((resolve, reject) => {
-   
+    //console.log("querying", url);
     request.get(url)
         .query(query)
         .set('Accept', accept)
         .then((res)=>{
-           
+          
 
           if (res.type === "text/html"){
             resolve({value:res.text});
@@ -35,12 +35,10 @@ export function get(url, query, accept="*/*"){
             resolve(res.body);
           }
           else{
-            console.log("have res");
-            console.log(res.xhr._response);
             resolve(res.xhr._response);
           }
         }, (err) => {
-          console.log(err);
+          //console.log("rooror", err);
           reject();
         });
     });
