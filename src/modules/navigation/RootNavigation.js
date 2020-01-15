@@ -7,6 +7,7 @@ import MainTabNavigator from './MainTabNavigator';
 import GalleryScreen from '../gallery/GalleryViewContainer';
 import AvailableInFullVersion from '../availableInFullVersion/AvailableInFullVersionViewContainer';
 import Sketch from  '../sketch/SketchContainer';
+import TagDevices from '../devices/TagDevicesViewContainer';
 
 import { colors, fonts } from '../../styles';
 
@@ -36,6 +37,13 @@ const stackNavigator = createStackNavigator(
         ),
       }
     },
+  },
+
+  TagDevices:{
+    screen: TagDevices,
+      navigationOptions: {
+        title: 'Tag a device',
+      },
   },
     
     Sketch : {

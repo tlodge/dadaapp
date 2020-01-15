@@ -1,4 +1,5 @@
 import { NavigationActions, StackActions } from 'react-navigation';
+import {addListener} from '../rfid/RFID';
 
 let _navigator;
 
@@ -7,18 +8,10 @@ function setTopLevelNavigator(navigatorRef) {
   _navigator = navigatorRef;
   
   if (_navigator){
-  setTimeout(()=>{
-    console.log("and navigator is", _navigator);
-    _navigator.dispatch(
-        NavigationActions.navigate({
-          routeName:"Devices",
-        })
-      );
+    addListener(_navigator); 
+  }
+}
 
-  }, 5000);
-}
- 
-}
 
 function navigate(routeName, params) {
   _navigator.dispatch(

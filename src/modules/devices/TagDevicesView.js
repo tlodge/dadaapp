@@ -8,16 +8,16 @@ import {
 } from 'react-native';
 import Image from 'react-native-remote-svg'
 import { colors, fonts } from '../../styles';
+import {writeTag} from '../rfid/RFID';
 
 export default function DevicesScreen (props){
    
     const {devices, navigation} = props;
-
+  
 
     useEffect(() => {
         // Update the document title using the browser API
        props.fetchDevices();
-      
     });
 
     _onSelectImage = (device, image)=>{
@@ -25,17 +25,18 @@ export default function DevicesScreen (props){
     };
     
     _selectDevice = device =>{
-        
-        navigation.navigate({
-            routeName: 'Sketch',
-            params: { ...device, onSelectImage:(image)=>_onSelectImage(device,image) },
+        writeTag(device.macaddr).then(()=>{
+           
+            navigation.navigate({
+            routeName: 'Devices',
+            params:  {tag:""},
+            })
+            
         });
-       
     }
 
     renderDeviceList = ({ item }) => (
         <View style={styles.itemThreeContainer, [{backgroundColor:"transparent"}]}>
-             
             <View style={styles.itemThreeSubContainer}>
                 <TouchableOpacity onPress={() => _selectDevice(item)} key={item.id}>
                     <Image  source={{ uri: item.image }} style={styles.itemThreeImage} />
@@ -75,9 +76,11 @@ export default function DevicesScreen (props){
 
         return (
       <View style={styles.container}>
-        
+          <View style={styles.title}>
+                 <Text style={styles.info}>Select a device to link to the tag.</Text>
+         </View>
         <FlatList
-          style={{ backgroundColor: colors.white, paddingHorizontal: 15 }}
+          style={{ backgroundColor: colors.bluish, paddingHorizontal: 15 }}
           data={devices}
           renderItem={renderDeviceList}
         />

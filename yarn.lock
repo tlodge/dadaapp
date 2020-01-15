@@ -6477,6 +6477,11 @@ react-native-remote-svg@^2.0.6:
   resolved "https://registry.yarnpkg.com/react-native-remote-svg/-/react-native-remote-svg-2.0.6.tgz#5f8bc7cefc18f4d37cf02f8158d6b2a9f534891d"
   integrity sha512-tQbDL+gtfGgG9Evz5TOn5Odmrn/EYsmsLqVZ0Do0VMJevfLBuQRioLiwRsI/BCgOHu1oQLZIIE5p7V/lN9jLrw==
 
+react-native-rfid-nfc-scanner@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-rfid-nfc-scanner/-/react-native-rfid-nfc-scanner-1.0.0.tgz#b6b853f43948d4c298d0b6dd4f7eca81adc192a3"
+  integrity sha512-+vhZqmzZlzgQo/wh/I+aBmouZPySRNRQGtJLslUgktw6b6ICbnMCwQ0wrU/ZDirwLPBAtlzCftad94BuKWcaCQ==
+
 react-native-safe-area-view@^0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.12.0.tgz#5c312f087300ecf82e8541c3eac25d560e147f22"
