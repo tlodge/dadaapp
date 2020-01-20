@@ -8,7 +8,7 @@ import GalleryScreen from '../gallery/GalleryViewContainer';
 import AvailableInFullVersion from '../availableInFullVersion/AvailableInFullVersionViewContainer';
 import Sketch from  '../sketch/SketchContainer';
 import TagDevices from '../devices/TagDevicesViewContainer';
-
+import Device from '../devices/DeviceMonitorViewContainer';
 import { colors, fonts } from '../../styles';
 
 const { width } = Dimensions.get('window');
@@ -38,7 +38,12 @@ const stackNavigator = createStackNavigator(
       }
     },
   },
-
+  MonitorDevices: {
+    screen: Device,
+    navigationOptions: {
+      title: 'Device',
+    },
+  },
   TagDevices:{
     screen: TagDevices,
       navigationOptions: {

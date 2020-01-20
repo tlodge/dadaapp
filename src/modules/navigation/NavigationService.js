@@ -4,8 +4,8 @@ import {addListener} from '../rfid/RFID';
 let _navigator;
 
 function setTopLevelNavigator(navigatorRef) {
-   
-  _navigator = navigatorRef;
+
+   _navigator = navigatorRef;
   
   if (_navigator){
     addListener(_navigator); 
@@ -14,12 +14,17 @@ function setTopLevelNavigator(navigatorRef) {
 
 
 function navigate(routeName, params) {
-  _navigator.dispatch(
-    NavigationActions.navigate({
-      routeName,
-      params,
-    })
-  );
+  if (_navigator){
+    _navigator.dispatch(
+        NavigationActions.navigate({
+        routeName,
+        params,
+        })
+    );
+  }else{
+      console.log("NOT NAVIGATING as NAVIGATOR IS NULL");
+  }
+
 }
 
 function push(routeName, params) {

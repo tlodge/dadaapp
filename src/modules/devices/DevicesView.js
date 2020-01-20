@@ -24,7 +24,7 @@ export default function DevicesScreen (props){
         props.updateDeviceImage(device.id, image);
     };
     
-    _selectDevice = device =>{
+    _sketchDevice = device =>{
         
         navigation.navigate({
             routeName: 'Sketch',
@@ -33,14 +33,19 @@ export default function DevicesScreen (props){
        
     }
 
+    _monitorDevice = device => navigation.navigate({
+        routeName: 'MonitorDevices',
+        params: { devices:[device] },
+    });
+
     renderDeviceList = ({ item }) => (
         <View style={styles.itemThreeContainer, [{backgroundColor:"transparent"}]}>
              
             <View style={styles.itemThreeSubContainer}>
-                <TouchableOpacity onPress={() => _selectDevice(item)} key={item.id}>
+                <TouchableOpacity onPress={() => _sketchDevice(item)} key={item.id}>
                     <Image  source={{ uri: item.image }} style={styles.itemThreeImage} />
                 </TouchableOpacity>
-                <View style={styles.itemThreeContent}>
+                <TouchableOpacity  onPress={() => _monitorDevice(item)} style={styles.itemThreeContent}>
                 <Text style={styles.itemThreemacaddr}>{item.macaddr}</Text>
                 <View>
                     <Text style={styles.itemThreeTitle}>{item.title}</Text>
@@ -50,24 +55,24 @@ export default function DevicesScreen (props){
                 </View>
                 <View style={styles.itemThreeMetaContainer}>
                 <Text style={styles.itemThreePrice}>{item.price}</Text>
-                    {item.badge && (
+                    {item.status && item.status.length>0 && (
                     <View
                         style={[
-                        styles.badge,
-                        item.badge === 'NEW' && { backgroundColor: colors.green },
+                        styles.status,
+                        item.status.indexOf('NEW') !== -1 && { backgroundColor: colors.green },
                         ]}
                     >
                         <Text
                         style={{ fontSize: 10, color: colors.white }}
                         styleName="bright"
                         >
-                        {item.badge}
+                        {item.status.join(",")}
                         </Text>
                     </View>
                     )}
                    
                 </View>
-                </View>
+                </TouchableOpacity>
             </View>
             <View style={styles.itemThreeHr} />
         </View>
@@ -78,7 +83,12 @@ export default function DevicesScreen (props){
         
         <FlatList
           style={{ backgroundColor: colors.white, paddingHorizontal: 15 }}
-          data={devices}
+          data={devices.map(d=>{
+            if (d.status.length > 0){
+                return {...d, image: d.image.replace(".st0{fill:#fff}",".st0{fill:#FF0075}")}
+            }
+            return d;
+          })}
           renderItem={renderDeviceList}
         />
       </View>
@@ -155,7 +165,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#e3e3e3',
     marginRight: -15,
   },
-  badge: {
+  status: {
     backgroundColor: colors.secondary,
     borderRadius: 10,
     paddingHorizontal: 10,

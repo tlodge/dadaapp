@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -14,38 +14,60 @@ export default function DevicesScreen (props){
    
     const {devices, navigation} = props;
   
+    const [selected, setSelected] = useState([]);
 
     useEffect(() => {
         // Update the document title using the browser API
        props.fetchDevices();
+      
     });
 
     _onSelectImage = (device, image)=>{
         props.updateDeviceImage(device.id, image);
     };
     
-    _selectDevice = device =>{
-        writeTag(device.macaddr).then(()=>{
+    _selectDevice = device => {
+        
+      
+        if (selected.indexOf(device.macaddr) == -1){
+           setSelected([...selected, device.macaddr]);
+        }else{
+           setSelected(selected.filter(d=>d!==device.macaddr));
+        }
+        /*writeTag(JSON.stringify([device.macaddr])).then(()=>{
            
             navigation.navigate({
             routeName: 'Devices',
             params:  {tag:""},
             })
             
-        });
+        });*/
     }
 
-    renderDeviceList = ({ item }) => (
-        <View style={styles.itemThreeContainer, [{backgroundColor:"transparent"}]}>
+    _tagDevices = ()=>{
+        if (selected.length >= 0){
+            writeTag(JSON.stringify(selected)).then(()=>{
+           
+                navigation.navigate({
+                    routeName: 'MonitorDevices',
+                    params:{devices:devices.filter(d=>selected.indexOf(d.macaddr) !== -1)},
+                })
+            
+            });
+        }
+    }
+    renderDeviceList = ({ item }) => {
+        const isselected = selected.indexOf(item.macaddr) !== -1;
+        return <TouchableOpacity onPress={() => _selectDevice(item)} style={styles.itemThreeContainer, [{paddingRight:15,backgroundColor: !isselected ? "transparent":colors.blue}]}>
             <View style={styles.itemThreeSubContainer}>
-                <TouchableOpacity onPress={() => _selectDevice(item)} key={item.id}>
+                <View key={item.id}>
                     <Image  source={{ uri: item.image }} style={styles.itemThreeImage} />
-                </TouchableOpacity>
+                </View>
                 <View style={styles.itemThreeContent}>
-                <Text style={styles.itemThreemacaddr}>{item.macaddr}</Text>
+                <Text style={styles.itemThreemacaddr, [{color: !isselected ?'#617ae1' : 'white' }]}>{item.macaddr}</Text>
                 <View>
                     <Text style={styles.itemThreeTitle}>{item.title}</Text>
-                    <Text style={styles.itemThreeSubtitle} numberOfLines={1}>
+                    <Text style={styles.itemThreeSubtitle, [{color: !isselected ?'#a4a4a4' : 'white' }]} numberOfLines={1}>
                     {item.subtitle}
                     </Text>
                 </View>
@@ -71,19 +93,23 @@ export default function DevicesScreen (props){
                 </View>
             </View>
             <View style={styles.itemThreeHr} />
-        </View>
-     );
+        </TouchableOpacity>
+    };
+
+    console.log("selected  is", selected)
+    const tagtext = selected.length > 1 ?  `tag ${selected.length} selected devices`: `tag selected device`;
 
         return (
       <View style={styles.container}>
           <View style={styles.title}>
-                 <Text style={styles.info}>Select a device to link to the tag.</Text>
+                 <Text style={styles.info}>Select the devices you'd like to link to the tag.</Text>
          </View>
         <FlatList
-          style={{ backgroundColor: colors.bluish, paddingHorizontal: 15 }}
+          style={{ backgroundColor: colors.bluish}}
           data={devices}
           renderItem={renderDeviceList}
         />
+        {selected.length > 0 && <TouchableOpacity onPress={_tagDevices} style={styles.tagbutton}><Text style={styles.tagbuttontext}>{tagtext}</Text></TouchableOpacity>}
       </View>
     );
         
@@ -93,8 +119,18 @@ export default function DevicesScreen (props){
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.secondary,
   },
+  tagbutton:{
+    height:60,
+    width: "100%",
+    backgroundColor: colors.secondary,
+    justifyContent:"center",
+    alignItems:"center",
+  },
+  tagbuttontext:{
+    color: "white",
+},
   title:{
     height: 60,
     width: "100%",
@@ -129,7 +165,7 @@ const styles = StyleSheet.create({
   itemThreemacaddr: {
     fontFamily: fonts.primaryRegular,
     fontSize: 14,
-    color: '#617ae1',
+   
   },
   itemThreeTitle: {
     fontFamily: fonts.primaryBold,
