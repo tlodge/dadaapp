@@ -1,25 +1,32 @@
 import NFC from "react-native-rfid-nfc-scanner";
-import { NavigationActions } from 'react-navigation';
 import {tagTapped} from '../devices/DevicesState';
 
 import { store } from '../../redux/store';
 
 
 export function addListener (_navigator){
-    console.log("initing NFC!!");
+  
 
     const {dispatch, getState} = store;
     setTimeout(()=>{
+        console.log("initing NFC!!");
         NFC.initialize();
+        NFC.removeAllListeners();
+        //NFC.stopScan();
+        console.log("done initing NFC!");
+
         
         NFC.addListener("listener", (tag)=>{
         
             console.log("seen result@", tag.scanned); 
-            NFC.removeAllListeners();
-            NFC.stopScan();
+            
             tagTapped(tag.scanned)(dispatch, getState);
             setTimeout(()=>addListener(_navigator),500);
-        }, (err)=>{console.log("error:", err)});
+        }, (err)=>{console.log("*** error:", err)});
+
+        NFC.addRangeListener("rangelistener", ()=>{
+            console.log("MAGIC -- out of range!!");
+        });
     },1000);
 }
 
