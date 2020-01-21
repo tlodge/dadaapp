@@ -7,6 +7,7 @@ export default compose(
   connect(
     state => ({
       devices: state.devices.devices,
+      inRange: state.devices.inRange,
     }),
     {
       fetchDevices,

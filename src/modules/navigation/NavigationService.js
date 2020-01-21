@@ -1,6 +1,7 @@
 import { NavigationActions, StackActions } from 'react-navigation';
 import {addListener} from '../rfid/RFID';
 
+
 let _navigator;
 
 function setTopLevelNavigator(navigatorRef) {
@@ -45,11 +46,16 @@ function pop() {
 
 
 function getCurrentRoute(){
-  let route = _navigator.state.nav;
-  while (route.routes) {
-    route = route.routes[route.index];
-  }
-  return route;
+
+   
+    if (_navigator){
+        try{        
+            const routes = _navigator.state.nav;
+            return routes.routes[routes.index].routeName;
+        }catch(err){
+        }
+    }
+    return "";
 }
 
 

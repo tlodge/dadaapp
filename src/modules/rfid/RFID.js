@@ -1,5 +1,5 @@
 import NFC from "react-native-rfid-nfc-scanner";
-import {tagTapped} from '../devices/DevicesState';
+import {tagTapped, tagOutOfRange} from '../devices/DevicesState';
 
 import { store } from '../../redux/store';
 
@@ -25,7 +25,7 @@ export function addListener (_navigator){
         }, (err)=>{console.log("*** error:", err)});
 
         NFC.addRangeListener("rangelistener", ()=>{
-            console.log("MAGIC -- out of range!!");
+           tagOutOfRange()(dispatch, getState);
         });
     },1000);
 }

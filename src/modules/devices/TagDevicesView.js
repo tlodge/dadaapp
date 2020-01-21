@@ -12,7 +12,7 @@ import {writeTag} from '../rfid/RFID';
 
 export default function DevicesScreen (props){
    
-    const {devices, navigation} = props;
+    const {devices, navigation, inRange=true} = props;
   
     const [selected, setSelected] = useState([]);
 
@@ -109,7 +109,7 @@ export default function DevicesScreen (props){
           data={devices}
           renderItem={renderDeviceList}
         />
-        {selected.length > 0 && <TouchableOpacity onPress={_tagDevices} style={styles.tagbutton}><Text style={styles.tagbuttontext}>{tagtext}</Text></TouchableOpacity>}
+        {selected.length > 0 && inRange && <TouchableOpacity onPress={_tagDevices} style={styles.tagbutton}><Text style={styles.tagbuttontext}>{tagtext}</Text></TouchableOpacity>}
       </View>
     );
         
